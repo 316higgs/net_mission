@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+########   What you need to set   ###################
 ARTICLE_DIR="articles/drafting/article_006"
-ARTICLE_FILE="01_初版.docx"
-REVISION=1
+ARTICLE_FILE="03_3次修正.docx"
+REVISION=4
 REVISION_SUFFIX="$(printf "v%02d" "$REVISION")"
+#####################################################
 
 # 出力モード: "gpt"（全文埋め込み）または "claude"（slim版）
 # 使い方:

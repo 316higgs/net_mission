@@ -2,9 +2,9 @@
 set -euo pipefail
 
 ########   What you need to set   ###################
-ARTICLE_DIR="articles/drafting/article_006"
-ARTICLE_FILE="04_4次修正.docx"
-REVISION=5
+ARTICLE_DIR="articles/drafting/article_007"
+ARTICLE_FILE="01_1次修正.docx"
+REVISION=2
 REVISION_SUFFIX="$(printf "v%02d" "$REVISION")"
 #####################################################
 

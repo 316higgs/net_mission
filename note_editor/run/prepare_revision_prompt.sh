@@ -3,8 +3,8 @@ set -euo pipefail
 
 ########   What you need to set   ###################
 ARTICLE_DIR="articles/drafting/article_007"
-ARTICLE_FILE="01_1次修正.docx"
-REVISION=2
+ARTICLE_FILE="04_4次修正.docx"
+REVISION=5
 REVISION_SUFFIX="$(printf "v%02d" "$REVISION")"
 #####################################################
 
@@ -33,6 +33,21 @@ python scripts/prepare_revision_prompt.py \
 # Claude Codeモードの場合のみ校正まで実行
 if [ "$MODE" = "claude" ]; then
   RESULT_FILE="$ARTICLE_DIR/$(printf "%02d" "$REVISION")_${REVISION}次校正_claude.md"
-  claude "$(cat "$OUTPUT")" > "$RESULT_FILE"
-  echo "[OK] 校正完了: $RESULT_FILE"
+
+  # 使用モデルを取得（~/.claude/settings.json のデフォルトモデル設定を参照）
+  MODEL="-"
+  if [ -f "$HOME/.claude/settings.json" ]; then
+    MODEL=$(grep -o '"model"[[:space:]]*:[[:space:]]*"[^"]*"' "$HOME/.claude/settings.json" | head -1 | sed -E 's/.*:[[:space:]]*"([^"]*)"/\1/')
+    MODEL="${MODEL:--}"
+  fi
+
+  CLAUDE_OUTPUT="$(claude "$(cat "$OUTPUT")")"
+
+  {
+    echo "> 校正実行情報: model=${MODEL} / ${REVISION}次校正 / 実行日時=$(date '+%Y-%m-%d %H:%M')"
+    echo ""
+    echo "$CLAUDE_OUTPUT"
+  } > "$RESULT_FILE"
+
+  echo "[OK] 校正完了: $RESULT_FILE (model: $MODEL)"
 fi
